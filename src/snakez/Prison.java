@@ -28,17 +28,41 @@ class Prison extends Environment {
     @Override
     public void initializeEnvironment() {
     }
+    
+    int counter;
 
     @Override
     public void timerTaskHandler() {
+//        System.out.println("Hey dude..." + counter++);
+        
     }
 
     @Override
     public void keyPressedHandler(KeyEvent e) {
+//        System.out.println("Key Event" + e.getKeyChar());
+//        System.out.println("Key Event" + e.getKeyCode());
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            System.out.println("Go LEFT!!!!!");
+        }else if (e.getKeyCode() == KeyEvent.VK_UP) {
+            System.out.println("Go UP!!!!!");
+        }else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            System.out.println("Go RIGHT!!!!!");
+        }else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            System.out.println("Go Down!!!!!");
+        }
     }
 
     @Override
     public void keyReleasedHandler(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_A) {
+            System.out.println("Realse LEFT!!!!!");
+        }else if (e.getKeyCode() == KeyEvent.VK_W) {
+            System.out.println("Realse UP!!!!!");
+        }else if (e.getKeyCode() == KeyEvent.VK_D) {
+            System.out.println("Realse RIGHT!!!!!");
+        }else if (e.getKeyCode() == KeyEvent.VK_S) {
+            System.out.println("Realse Down!!!!!");
+        }
     }
 
     @Override
