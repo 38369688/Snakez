@@ -18,23 +18,35 @@ import java.awt.event.MouseEvent;
  * @author alextsai
  */
 class Prison extends Environment {
-    
-    Grid grid;
+
+    private Grid grid;
+    private Cobra hydra;
 
     public Prison() {
-        grid = new Grid(25, 25, 20, 20, new Point(10,50), Color.BLACK);
+        grid = new Grid(50, 30, 20, 20, new Point(10, 50), Color.BLACK);
+        hydra = new Cobra(Direction.LEFT, grid);
     }
 
     @Override
     public void initializeEnvironment() {
     }
-    
+
     int counter;
+
+    int moveDelay = 0;
+    int moveDelayLimit = 1;
 
     @Override
     public void timerTaskHandler() {
-//        System.out.println("Hey dude..." + counter++);
-        
+        System.out.println("Hey dude..." + counter++);
+        if (hydra != null) {
+            if (moveDelay >= moveDelayLimit) {
+                hydra.move();
+                moveDelay = 0;
+            } else {
+                moveDelay++;
+            }
+        }
     }
 
     @Override
@@ -42,27 +54,34 @@ class Prison extends Environment {
 //        System.out.println("Key Event" + e.getKeyChar());
 //        System.out.println("Key Event" + e.getKeyCode());
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            System.out.println("Go LEFT!!!!!");
-        }else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            System.out.println("Go UP!!!!!");
-        }else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            System.out.println("Go RIGHT!!!!!");
-        }else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            System.out.println("Go Down!!!!!");
+            hydra.setDirection(Direction.LEFT);
+            hydra.move();
+        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+            hydra.setDirection(Direction.UP);
+            hydra.move();
+
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            hydra.setDirection(Direction.RIGHT);
+            hydra.move();
+
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            hydra.setDirection(Direction.DOWN);
+            hydra.move();
+
         }
     }
 
     @Override
     public void keyReleasedHandler(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_A) {
-            System.out.println("Realse LEFT!!!!!");
-        }else if (e.getKeyCode() == KeyEvent.VK_W) {
-            System.out.println("Realse UP!!!!!");
-        }else if (e.getKeyCode() == KeyEvent.VK_D) {
-            System.out.println("Realse RIGHT!!!!!");
-        }else if (e.getKeyCode() == KeyEvent.VK_S) {
-            System.out.println("Realse Down!!!!!");
-        }
+//        if (e.getKeyCode() == KeyEvent.VK_A) {
+//            System.out.println("Realse LEFT!!!!!");
+//        } else if (e.getKeyCode() == KeyEvent.VK_W) {
+//            System.out.println("Realse UP!!!!!");
+//        } else if (e.getKeyCode() == KeyEvent.VK_D) {
+//            System.out.println("Realse RIGHT!!!!!");
+//        } else if (e.getKeyCode() == KeyEvent.VK_S) {
+//            System.out.println("Realse Down!!!!!");
+//        }
     }
 
     @Override
@@ -76,6 +95,9 @@ class Prison extends Environment {
         if (grid != null) {
             grid.paintComponent(graphics);
         }
+        if (hydra != null) {
+            hydra.draw(graphics);
+        }
     }
-    
+
 }

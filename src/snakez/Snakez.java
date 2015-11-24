@@ -19,5 +19,5 @@ public class Snakez {
     public static void main(String[] args) {
         ApplicationStarter.run("Sanke run", new Prison());
     }
-    
+
 }
