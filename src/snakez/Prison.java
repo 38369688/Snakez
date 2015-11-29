@@ -12,19 +12,25 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 /**
  *
  * @author alextsai
  */
-class Prison extends Environment {
+class Prison extends Environment implements MoveValidatorIntf {
 
     private Grid grid;
     private Cobra hydra;
+    ;
+    private ArrayList<Prisoner> prisoners;
 
     public Prison() {
         grid = new Grid(50, 30, 20, 20, new Point(10, 50), Color.BLACK);
-        hydra = new Cobra(Direction.LEFT, grid);
+        hydra = new Cobra(Direction.RIGHT, grid, this);
+        
+        prisoners = new ArrayList<>();
+        prisoners.add(new Prisoner());
     }
 
     @Override
@@ -38,7 +44,7 @@ class Prison extends Environment {
 
     @Override
     public void timerTaskHandler() {
-        System.out.println("Hey dude..." + counter++);
+//        System.out.println("Hey dude..." + counter++);
         if (hydra != null) {
             if (moveDelay >= moveDelayLimit) {
                 hydra.move();
@@ -98,6 +104,27 @@ class Prison extends Environment {
         if (hydra != null) {
             hydra.draw(graphics);
         }
+        if (prisoners != null) {
+            for (int i = 0; i < prisoners.size(); i++) {
+                prisoners.get(i).draw(graphics);
+            }
+        }
     }
+
+//<editor-fold defaultstate="collapsed" desc="MoveValidatorIntf">
+    @Override
+    public Point validateMove(Point proposedLocation) {
+        if (proposedLocation.x < 0) {
+            System.out.println("Game Over");
+        }else if (proposedLocation.y < 0){
+            System.out.println("Game Over");
+        }else if (proposedLocation.x > 50){
+            System.out.println("Game Over");
+        }else if (proposedLocation.y > 30){
+            System.out.println("Game Over");
+        }
+        return proposedLocation;
+    }
+//</editor-fold>
 
 }

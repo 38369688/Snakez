@@ -16,10 +16,12 @@ import java.util.ArrayList;
  * @author alextsai
  */
 public class Cobra {
+   
 
-    public Cobra(Direction direction, Grid grid) {
+    public Cobra(Direction direction, Grid grid, MoveValidatorIntf validator) {
         this.direction = direction;
         this.grid = grid;
+        this.validator = validator;
 
         body = new ArrayList<>();
         body.add(new Point(5, 5));
@@ -29,17 +31,18 @@ public class Cobra {
         body.add(new Point(3, 3));
 
     }
-
+    private static final int HEAD_POSITION = 0;
     private Direction direction = Direction.LEFT;
     private ArrayList<Point> body;
     private Grid grid;
     private Color bodyColor = Color.green;
+    private final MoveValidatorIntf validator;
 
     public void draw(Graphics graphics) {
         graphics.setColor(getBodyColor());
 
         for (int i = 0; i < getBody().size(); i++) {
-            System.out.println("body locations = " + getBody().get(i).toString());
+//            System.out.println("body locations = " + getBody().get(i).toString());
             graphics.fillOval(getGrid().getCellSystemCoordinate(getBody().get(i)).x,
                               getGrid().getCellSystemCoordinate(getBody().get(i)).y, 
                               getGrid().getCellWidth(), getGrid().getCellWidth());
@@ -51,22 +54,22 @@ public class Cobra {
         
         if (getDirection() == Direction.LEFT) {
             newHead.x--;
-        }       
+        }      
         if (getDirection() == Direction.RIGHT) {
             newHead.x++;
-        }       
+        }      
         if (getDirection() == Direction.UP) {
             newHead.y--;
         }       
         if (getDirection() == Direction.DOWN) {
             newHead.y++;
         }
-        getBody().add(0, newHead);
+        getBody().add(HEAD_POSITION, validator.validateMove(newHead));
         getBody().remove(getBody().size() - 1);
     }
     
     public Point getHead(){
-        return getBody().get(0);
+        return getBody().get(HEAD_POSITION);
     }
 
     /**

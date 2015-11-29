@@ -4,8 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/Users/alextsai/NetBeansProjects/Snakez/src/snakez/Direction.java</file>
+            <file>file:/Users/alextsai/NetBeansProjects/Snakez/src/snakez/MoveValidatorIntf.java</file>
             <file>file:/Users/alextsai/NetBeansProjects/Snakez/src/snakez/Cobra.java</file>
             <file>file:/Users/alextsai/NetBeansProjects/Snakez/src/snakez/Prison.java</file>
+            <file>file:/Users/alextsai/NetBeansProjects/Snakez/src/snakez/Prisoner.java</file>
             <file>file:/Users/alextsai/NetBeansProjects/Snakez/src/snakez/Snakez.java</file>
         </group>
     </open-files>
