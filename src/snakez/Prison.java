@@ -40,7 +40,9 @@ class Prison extends Environment implements MoveValidatorIntf {
     int counter;
 
     int moveDelay = 0;
-    int moveDelayLimit = 1;
+    int moveDelayLimit = 3;
+    int timer = 0;
+    int timerLimit = 1;
 
     @Override
     public void timerTaskHandler() {
@@ -52,6 +54,16 @@ class Prison extends Environment implements MoveValidatorIntf {
             } else {
                 moveDelay++;
             }
+        }
+        if (hydra != null) {
+            if (timer <= timerLimit) {
+                timerLimit++;
+            }
+            if (timer == timerLimit){
+                grid.setColumns(-1);
+                grid.setRows(-1);
+            }
+            
         }
     }
 

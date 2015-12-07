@@ -14,7 +14,7 @@ import java.awt.Graphics;
 class Prisoner {
 
     void draw(Graphics graphics) {
-        System.out.println("I need to write some code here...");
+//        System.out.println("I need to write some code here...");
     }
     
 }

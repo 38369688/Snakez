@@ -47,6 +47,10 @@ public class Cobra {
                               getGrid().getCellSystemCoordinate(getBody().get(i)).y, 
                               getGrid().getCellWidth(), getGrid().getCellWidth());
         }
+        if (HEAD_POSITION= = 0) {
+
+            
+        }
     }
     
     public void move(){
