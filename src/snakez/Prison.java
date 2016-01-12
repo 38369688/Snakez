@@ -5,6 +5,7 @@
  */
 package snakez;
 
+import audio.AudioPlayer;
 import environment.Environment;
 import grid.Grid;
 import java.awt.Color;
@@ -40,9 +41,9 @@ class Prison extends Environment implements MoveValidatorIntf {
     int counter;
 
     int moveDelay = 0;
-    int moveDelayLimit = 3;
+    int moveDelayLimit = 2;
     int timer = 0;
-    int timerLimit = 1;
+    int timerLimit = 20;
 
     @Override
     public void timerTaskHandler() {
@@ -55,13 +56,15 @@ class Prison extends Environment implements MoveValidatorIntf {
                 moveDelay++;
             }
         }
-        if (hydra != null) {
+
+        if (grid != null) {
             if (timer <= timerLimit) {
-                timerLimit++;
+                timer++;
             }
-            if (timer == timerLimit){
-                grid.setColumns(-1);
-                grid.setRows(-1);
+            if (timer >= timerLimit){
+                grid.setColumns(grid.getColumns()-1);
+                grid.setRows(grid.getRows()-1);
+                timer = 0;
             }
             
         }
@@ -86,20 +89,28 @@ class Prison extends Environment implements MoveValidatorIntf {
             hydra.setDirection(Direction.DOWN);
             hydra.move();
 
+        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            AudioPlayer.play("/snakez/mp5_smg.wav");
         }
     }
 
     @Override
     public void keyReleasedHandler(KeyEvent e) {
-//        if (e.getKeyCode() == KeyEvent.VK_A) {
-//            System.out.println("Realse LEFT!!!!!");
-//        } else if (e.getKeyCode() == KeyEvent.VK_W) {
-//            System.out.println("Realse UP!!!!!");
-//        } else if (e.getKeyCode() == KeyEvent.VK_D) {
-//            System.out.println("Realse RIGHT!!!!!");
-//        } else if (e.getKeyCode() == KeyEvent.VK_S) {
-//            System.out.println("Realse Down!!!!!");
-//        }
+        if (e.getKeyCode() == KeyEvent.VK_A) {
+            System.out.println("Realse LEFT!!!!!");
+        } else if (e.getKeyCode() == KeyEvent.VK_W) {
+            System.out.println("Realse UP!!!!!");
+        } else if (e.getKeyCode() == KeyEvent.VK_D) {
+            System.out.println("Realse RIGHT!!!!!");
+        } else if (e.getKeyCode() == KeyEvent.VK_S) {
+            System.out.println("Realse Down!!!!!");
+        } else if (e.getKeyCode() == KeyEvent.VK_P) {
+            System.out.println("PAUSED!!!!!");
+            hydra.stop();
+        } else if (e.getKeyCode() == KeyEvent.VK_G) {
+            System.out.println("GO!!!!!");
+            hydra.go();
+        }
     }
 
     @Override
@@ -127,12 +138,16 @@ class Prison extends Environment implements MoveValidatorIntf {
     @Override
     public Point validateMove(Point proposedLocation) {
         if (proposedLocation.x < 0) {
+            hydra.stop();
             System.out.println("Game Over");
         }else if (proposedLocation.y < 0){
+            hydra.stop();
             System.out.println("Game Over");
-        }else if (proposedLocation.x > 50){
+        }else if (proposedLocation.x > grid.getColumns()){
+            hydra.stop();
             System.out.println("Game Over");
-        }else if (proposedLocation.y > 30){
+        }else if (proposedLocation.y > grid.getRows()){
+            hydra.stop();
             System.out.println("Game Over");
         }
         return proposedLocation;

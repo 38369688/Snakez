@@ -16,7 +16,6 @@ import java.util.ArrayList;
  * @author alextsai
  */
 public class Cobra {
-   
 
     public Cobra(Direction direction, Grid grid, MoveValidatorIntf validator) {
         this.direction = direction;
@@ -28,15 +27,11 @@ public class Cobra {
         body.add(new Point(5, 4));
         body.add(new Point(5, 3));
         body.add(new Point(4, 3));
-        body.add(new Point(3, 3));
+        body.add(new Point(2, 3));
+        body.add(new Point(1, 3));
+        body.add(new Point(1, 2));
 
     }
-    private static final int HEAD_POSITION = 0;
-    private Direction direction = Direction.LEFT;
-    private ArrayList<Point> body;
-    private Grid grid;
-    private Color bodyColor = Color.green;
-    private final MoveValidatorIntf validator;
 
     public void draw(Graphics graphics) {
         graphics.setColor(getBodyColor());
@@ -44,35 +39,46 @@ public class Cobra {
         for (int i = 0; i < getBody().size(); i++) {
 //            System.out.println("body locations = " + getBody().get(i).toString());
             graphics.fillOval(getGrid().getCellSystemCoordinate(getBody().get(i)).x,
-                              getGrid().getCellSystemCoordinate(getBody().get(i)).y, 
-                              getGrid().getCellWidth(), getGrid().getCellWidth());
+                    getGrid().getCellSystemCoordinate(getBody().get(i)).y,
+                    getGrid().getCellWidth(), getGrid().getCellWidth());
         }
-        if (HEAD_POSITION= = 0) {
+    }
 
-            
+    public void move() {
+        if (!stopped) {
+            Point newHead = new Point(getHead());
+
+            if (getDirection() == Direction.LEFT) {
+                newHead.x--;
+            } else if (getDirection() == Direction.RIGHT) {
+                newHead.x++;
+            } else if (getDirection() == Direction.UP) {
+                newHead.y--;
+            } else if (getDirection() == Direction.DOWN) {
+                newHead.y++;
+            }
+            getBody().add(HEAD_POSITION, validator.validateMove(newHead));
+            getBody().remove(getBody().size() - 1);
         }
     }
-    
-    public void move(){
-        Point newHead = new Point(getHead());
-        
-        if (getDirection() == Direction.LEFT) {
-            newHead.x--;
-        }      
-        if (getDirection() == Direction.RIGHT) {
-            newHead.x++;
-        }      
-        if (getDirection() == Direction.UP) {
-            newHead.y--;
-        }       
-        if (getDirection() == Direction.DOWN) {
-            newHead.y++;
-        }
-        getBody().add(HEAD_POSITION, validator.validateMove(newHead));
-        getBody().remove(getBody().size() - 1);
+
+    private static final int HEAD_POSITION = 0;
+    private Direction direction = Direction.LEFT;
+    private ArrayList<Point> body;
+    private Grid grid;
+    private Color bodyColor = Color.green;
+    private final MoveValidatorIntf validator;
+    private boolean stopped = false;
+
+    public void stop(){
+        stopped = true;
+    }
+
+    public void go(){
+        stopped = false;
     }
     
-    public Point getHead(){
+    public Point getHead() {
         return getBody().get(HEAD_POSITION);
     }
 

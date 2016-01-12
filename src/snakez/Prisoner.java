@@ -14,7 +14,7 @@ import java.awt.Graphics;
 class Prisoner {
 
     void draw(Graphics graphics) {
-//        System.out.println("I need to write some code here...");
+//        graphics.drawOval(Math.random(), Math.random(), 20, 20);
     }
     
 }
