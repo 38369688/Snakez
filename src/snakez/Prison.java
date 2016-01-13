@@ -43,7 +43,7 @@ class Prison extends Environment implements MoveValidatorIntf {
     int moveDelay = 0;
     int moveDelayLimit = 2;
     int timer = 0;
-    int timerLimit = 20;
+    int timerLimit = 1200;
 
     @Override
     public void timerTaskHandler() {
