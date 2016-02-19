@@ -45,7 +45,7 @@ public class Cobra {
     }
 
     public void move() {
-        if (!stopped) {
+        if (!isStopped()) {
             Point newHead = new Point(getHead());
 
             if (getDirection() == Direction.LEFT) {
@@ -62,6 +62,7 @@ public class Cobra {
         }
     }
 
+//<editor-fold defaultstate="collapsed" desc="Proprties">
     private static final int HEAD_POSITION = 0;
     private Direction direction = Direction.LEFT;
     private ArrayList<Point> body;
@@ -69,73 +70,88 @@ public class Cobra {
     private Color bodyColor = Color.green;
     private final MoveValidatorIntf validator;
     private boolean stopped = false;
-
+    
     public void stop(){
-        stopped = true;
+        setStopped(true);
     }
-
+    
     public void go(){
-        stopped = false;
+        setStopped(false);
     }
     
     public Point getHead() {
         return getBody().get(HEAD_POSITION);
     }
-
+    
     /**
      * @return the direction
      */
     public Direction getDirection() {
         return direction;
     }
-
+    
     /**
      * @param direction the direction to set
      */
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
-
+    
     /**
      * @return the body
      */
     public ArrayList<Point> getBody() {
         return body;
     }
-
+    
     /**
      * @param body the body to set
      */
     public void setBody(ArrayList<Point> body) {
         this.body = body;
     }
-
+    
     /**
      * @return the grid
      */
     public Grid getGrid() {
         return grid;
     }
-
+    
     /**
      * @param grid the grid to set
      */
     public void setGrid(Grid grid) {
         this.grid = grid;
     }
-
+    
     /**
      * @return the bodyColor
      */
     public Color getBodyColor() {
         return bodyColor;
     }
-
+    
     /**
      * @param bodyColor the bodyColor to set
      */
     public void setBodyColor(Color bodyColor) {
         this.bodyColor = bodyColor;
     }
+    
+    /**
+     * @return the stopped
+     */
+    public boolean isStopped() {
+        return stopped;
+    }
+    
+    /**
+     * @param stopped the stopped to set
+     */
+    public void setStopped(boolean stopped) {
+        this.stopped = stopped;
+    }
+//</editor-fold>
 
 }

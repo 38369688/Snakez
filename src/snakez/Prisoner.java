@@ -6,15 +6,23 @@
 package snakez;
 
 import java.awt.Graphics;
+import java.awt.Image;
 
 /**
  *
  * @author alextsai
  */
 class Prisoner {
+    
+   
 
-    void draw(Graphics graphics) {
-//        graphics.drawOval(Math.random(), Math.random(), 20, 20);
+    public void draw(Graphics graphics) {
+//        graphics.drawOval(x, y, 20, 20);
+        
     }
+    
+    
+    private int x, y;
+    private Image image;
     
 }

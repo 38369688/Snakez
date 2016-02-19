@@ -29,7 +29,7 @@ class Prison extends Environment implements MoveValidatorIntf {
     public Prison() {
         grid = new Grid(50, 30, 20, 20, new Point(10, 50), Color.BLACK);
         hydra = new Cobra(Direction.RIGHT, grid, this);
-        
+
         prisoners = new ArrayList<>();
         prisoners.add(new Prisoner());
     }
@@ -41,9 +41,9 @@ class Prison extends Environment implements MoveValidatorIntf {
     int counter;
 
     int moveDelay = 0;
-    int moveDelayLimit = 2;
+    int moveDelayLimit = 1;
     int timer = 0;
-    int timerLimit = 1200;
+    int timerLimit = 600;
 
     @Override
     public void timerTaskHandler() {
@@ -58,15 +58,19 @@ class Prison extends Environment implements MoveValidatorIntf {
         }
 
         if (grid != null) {
+//      if hydra isn't stoped and the time is less than the timerlimit than the following applies
+//            if () {
+
+//            }
             if (timer <= timerLimit) {
                 timer++;
             }
-            if (timer >= timerLimit){
-                grid.setColumns(grid.getColumns()-1);
-                grid.setRows(grid.getRows()-1);
+            if ((timer >= timerLimit) && (!hydra.isStopped())) {
+                grid.setColumns(grid.getColumns() - 1);
+                grid.setRows(grid.getRows() - 1);
                 timer = 0;
             }
-            
+
         }
     }
 
@@ -140,13 +144,13 @@ class Prison extends Environment implements MoveValidatorIntf {
         if (proposedLocation.x < 0) {
             hydra.stop();
             System.out.println("Game Over");
-        }else if (proposedLocation.y < 0){
+        } else if (proposedLocation.y < 0) {
             hydra.stop();
             System.out.println("Game Over");
-        }else if (proposedLocation.x > grid.getColumns()){
+        } else if (proposedLocation.x > grid.getColumns()) {
             hydra.stop();
             System.out.println("Game Over");
-        }else if (proposedLocation.y > grid.getRows()){
+        } else if (proposedLocation.y > grid.getRows()) {
             hydra.stop();
             System.out.println("Game Over");
         }
