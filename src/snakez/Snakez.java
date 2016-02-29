@@ -17,7 +17,7 @@ public class Snakez {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ApplicationStarter.run("Sanke run", new Prison());
+        ApplicationStarter.run("Sanke run", new Forest());
     }
 
 }
