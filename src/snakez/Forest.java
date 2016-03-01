@@ -1,7 +1,9 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Have worker as food running away from you and they will sence you when you are 
+   5 tiles away from them, they will also drop bombs on a random generated number from 1- 50
+   every tile they travel and if the number maches with the set number they will drop it, and
+   the bomb will go after 3 seconds and does nothing or go when the snake head enters the same tile.
+    And stun you for 2 seconds. Also safe zone if we get there.
  */
 package snakez;
 
@@ -21,25 +23,25 @@ import java.util.ArrayList;
  *
  * @author alextsai
  */
-class Forest extends Environment implements MoveValidatorIntf {
+class Forest extends Environment implements MoveValidatorIntf, CellDataProviderIntf {
 
     private Grid grid;
     private Cobra hydra;
     private Image forest;
     
-    
-    private ArrayList<Prisoner> prisoners;
+    private ArrayList<GridItem> workers;
+    private ArrayList<GridItem> bombs;
 
     public Forest() {
         this.setBackground(ResourceTools.loadImageFromResource("snakez/mumbai.png"));
         forest = ResourceTools.loadImageFromResource("snakez/forest.jpg");
         
-        grid = new Grid(50, 30, 20, 20, new Point(), Color.BLACK);
-        grid.setPosition(new Point((this.getWidth() - this.getGridWidth())/2, (this.getHeight() - this.getGridHeigth())/2));
+        grid = new Grid(50, 30, 20, 20, new Point(10, 50), Color.BLACK);
+//        grid.setPosition(new Point((this.getWidth() - this.getGridWidth())/2, (this.getHeight() - this.getGridHeigth())/2));
         hydra = new Cobra(Direction.RIGHT, grid, this);
 
-        prisoners = new ArrayList<>();
-        prisoners.add(new Prisoner());
+        workers = new ArrayList<>();
+//        workers.add(new GridItem());
     }
 
     @Override
@@ -50,8 +52,10 @@ class Forest extends Environment implements MoveValidatorIntf {
 
     int moveDelay = 0;
     int moveDelayLimit = 1;
-    int timer = 0;
-    int timerLimit = 20;
+//    int timer = 0;
+//    int timerLimit = 20;
+    int workerTimer = 0;
+    int workerTimerLimit = 30;
 
     @Override
     public void timerTaskHandler() {
@@ -70,18 +74,50 @@ class Forest extends Environment implements MoveValidatorIntf {
 //            if () {
 
 //            }
-            if (timer <= timerLimit) {
-                timer++;
-            }
-            if ((timer >= timerLimit) && (!hydra.isStopped())) {
-                grid.setColumns(grid.getColumns() - 1);
-                grid.setRows(grid.getRows() - 1);
-                grid.setPosition(new Point((this.getWidth() - this.getGridWidth())/2, (this.getHeight() - this.getGridHeigth())/2));
+            if (workerTimer < workerTimerLimit) {
+                workerTimer++;
+            } else if (!hydra.isStopped()) {
+                workers.add(new GridItem(getRandomBoundaryPoint(), GridItem.ITEM_TYPE_WORKER, this));
                 
-                timer = 0;
+//                grid.setColumns(grid.getColumns() - 1);
+//                grid.setRows(grid.getRows() - 1);
+//                grid.setPosition(new Point((this.getWidth() - this.getGridWidth())/2, (this.getHeight() - this.getGridHeigth())/2));
+                
+                workerTimer = 0;
             }
+//            if (timer <= timerLimit) {
+//                timer++;
+//            }
+//            if ((timer >= timerLimit) && (!hydra.isStopped())) {
+//                grid.setColumns(grid.getColumns() - 1);
+//                grid.setRows(grid.getRows() - 1);
+//                grid.setPosition(new Point((this.getWidth() - this.getGridWidth())/2, (this.getHeight() - this.getGridHeigth())/2));
+//                
+//                timer = 0;
+//            }
 
         }
+    }
+    
+    private Point getRandomBoundaryPoint(){
+        double random = Math.random();
+        int x, y;
+        
+        if (random <= .25) { // scenario #1 left column of grid
+            x = 0;
+            y = (int) (Math.random() * grid.getRows()); 
+        } else if (random <= .5) { // scenario #2 rightmost column of grid
+            x = grid.getColumns() - 1;
+            y = (int) (Math.random() * grid.getRows()); 
+        } else if (random <= .75) { // scenario #3 top row of grid
+            x = (int) (Math.random() * grid.getColumns());
+            y = 0; 
+        } else { // scenario #4 bottom row of grid
+            x = (int) (Math.random() * grid.getColumns());
+            y = grid.getRows() - 1;
+        }
+        
+        return new Point(x, y);
     }
 
     @Override
@@ -149,21 +185,22 @@ class Forest extends Environment implements MoveValidatorIntf {
                     getGridWidth(), getGridHeigth(), this);
         }
         
-        
         if (grid != null) {
             grid.paintComponent(graphics);
         }
+        
         if (hydra != null) {
             hydra.draw(graphics);
         }
-        if (prisoners != null) {
-            for (int i = 0; i < prisoners.size(); i++) {
-                prisoners.get(i).draw(graphics);
+
+        if (workers != null) {
+            for (GridItem worker : workers){
+                worker.draw(graphics);
             }
         }
     }
 
-//<editor-fold defaultstate="collapsed" desc="MoveValidatorIntf">
+//<editor-fold defaultstate="collapsed" desc="MoveValidatorIntf Methods">
     @Override
     public Point validateMove(Point proposedLocation) {
         if (proposedLocation.x < 0) {
@@ -180,6 +217,28 @@ class Forest extends Environment implements MoveValidatorIntf {
             System.out.println("Game Over");
         }
         return proposedLocation;
+    }
+//</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="CellDataProviderIntf Methods">
+    @Override
+    public int getCellWidth() {
+        return grid.getCellWidth();
+    }
+    
+    @Override
+    public int getCellHeight() {
+        return grid.getCellHeight();
+    }
+    
+    @Override
+    public int getSystemCoordX(int x, int y) {
+        return grid.getCellSystemCoordinate(x, y).x;
+    }
+    
+    @Override
+    public int getSystemCoordY(int x, int y) {
+        return grid.getCellSystemCoordinate(x, y).y;
     }
 //</editor-fold>
 
