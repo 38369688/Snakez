@@ -4,6 +4,32 @@
  every tile they travel and if the number maches with the set number they will drop it, and
  the bomb will go after 3 seconds and does nothing or go when the snake head enters the same tile.
  And stun you for 2 seconds. Also safe zone if we get there.
+
+
+
+    Homework for Alex
+      - get image for workers
+      - get image for bombs
+      - get sounds for events 
+         - drop bomb
+        - bomb explode
+        - eating
+        - game end
+        - game start
+        - background music
+        - grid shrink
+
+      - think about worker movement
+      - randomly drop bombs (need ArralyList for bombs, and way yo create them
+      - draw bombs in paint method
+      - think about score
+      - think about thinking
+      - think about Mr. Lawrence being unhappy when you are not assertive and doing work
+      - design menu
+      - think about drawing snake a different, more exciting way
+      - think about difficult progression...
+
+
  */
 package snakez;
 
@@ -52,8 +78,6 @@ class Forest extends Environment implements MoveValidatorIntf, CellDataProviderI
 
     int moveDelay = 0;
     int moveDelayLimit = 1;
-//    int timer = 0;
-//    int timerLimit = 20;
     int workerTimer = 0;
     int workerTimerLimit = 30;
 
@@ -61,7 +85,6 @@ class Forest extends Environment implements MoveValidatorIntf, CellDataProviderI
 
     @Override
     public void timerTaskHandler() {
-//        System.out.println("Hey dude..." + counter++);
         if (hydra != null) {
             if (moveDelay >= moveDelayLimit) {
                 hydra.move();
@@ -72,10 +95,6 @@ class Forest extends Environment implements MoveValidatorIntf, CellDataProviderI
         }
 
         if (grid != null) {
-//      if hydra isn't stoped and the time is less than the timerlimit than the following applies
-//            if () {
-
-//            }
             if (workerTimer < workerTimerLimit) {
                 workerTimer++;
             } else if (!hydra.isStopped()) {
@@ -86,26 +105,11 @@ class Forest extends Environment implements MoveValidatorIntf, CellDataProviderI
                     grid.setColumns(grid.getColumns() - 1);
                     grid.setRows(grid.getRows() - 1);
                     grid.setPosition(new Point((this.getWidth() - this.getGridWidth()) / 2, (this.getHeight() - this.getGridHeigth()) / 2));
-                
+
                     workers.clear();
                 }
-
-//                grid.setColumns(grid.getColumns() - 1);
-//                grid.setRows(grid.getRows() - 1);
-//                grid.setPosition(new Point((this.getWidth() - this.getGridWidth())/2, (this.getHeight() - this.getGridHeigth())/2));
                 workerTimer = 0;
             }
-//            if (timer <= timerLimit) {
-//                timer++;
-//            }
-//            if ((timer >= timerLimit) && (!hydra.isStopped())) {
-//                grid.setColumns(grid.getColumns() - 1);
-//                grid.setRows(grid.getRows() - 1);
-//                grid.setPosition(new Point((this.getWidth() - this.getGridWidth())/2, (this.getHeight() - this.getGridHeigth())/2));
-//                
-//                timer = 0;
-//            }
-
         }
     }
 
