@@ -1,9 +1,9 @@
 /*
  * Have worker as food running away from you and they will sence you when you are 
-   5 tiles away from them, they will also drop bombs on a random generated number from 1- 50
-   every tile they travel and if the number maches with the set number they will drop it, and
-   the bomb will go after 3 seconds and does nothing or go when the snake head enters the same tile.
-    And stun you for 2 seconds. Also safe zone if we get there.
+ 5 tiles away from them, they will also drop bombs on a random generated number from 1- 50
+ every tile they travel and if the number maches with the set number they will drop it, and
+ the bomb will go after 3 seconds and does nothing or go when the snake head enters the same tile.
+ And stun you for 2 seconds. Also safe zone if we get there.
  */
 package snakez;
 
@@ -28,14 +28,14 @@ class Forest extends Environment implements MoveValidatorIntf, CellDataProviderI
     private Grid grid;
     private Cobra hydra;
     private Image forest;
-    
+
     private ArrayList<GridItem> workers;
     private ArrayList<GridItem> bombs;
 
     public Forest() {
         this.setBackground(ResourceTools.loadImageFromResource("snakez/mumbai.png"));
         forest = ResourceTools.loadImageFromResource("snakez/forest.jpg");
-        
+
         grid = new Grid(50, 30, 20, 20, new Point(10, 50), Color.BLACK);
 //        grid.setPosition(new Point((this.getWidth() - this.getGridWidth())/2, (this.getHeight() - this.getGridHeigth())/2));
         hydra = new Cobra(Direction.RIGHT, grid, this);
@@ -56,6 +56,8 @@ class Forest extends Environment implements MoveValidatorIntf, CellDataProviderI
 //    int timerLimit = 20;
     int workerTimer = 0;
     int workerTimerLimit = 30;
+
+    int workerLimit = 15;
 
     @Override
     public void timerTaskHandler() {
@@ -78,11 +80,19 @@ class Forest extends Environment implements MoveValidatorIntf, CellDataProviderI
                 workerTimer++;
             } else if (!hydra.isStopped()) {
                 workers.add(new GridItem(getRandomBoundaryPoint(), GridItem.ITEM_TYPE_WORKER, this));
+
+                //if we reach the worker limit, then shrink grid and reset workers (eliminate them)
+                if (workers.size() >= workerLimit) {
+                    grid.setColumns(grid.getColumns() - 1);
+                    grid.setRows(grid.getRows() - 1);
+                    grid.setPosition(new Point((this.getWidth() - this.getGridWidth()) / 2, (this.getHeight() - this.getGridHeigth()) / 2));
                 
+                    workers.clear();
+                }
+
 //                grid.setColumns(grid.getColumns() - 1);
 //                grid.setRows(grid.getRows() - 1);
 //                grid.setPosition(new Point((this.getWidth() - this.getGridWidth())/2, (this.getHeight() - this.getGridHeigth())/2));
-                
                 workerTimer = 0;
             }
 //            if (timer <= timerLimit) {
@@ -98,25 +108,25 @@ class Forest extends Environment implements MoveValidatorIntf, CellDataProviderI
 
         }
     }
-    
-    private Point getRandomBoundaryPoint(){
+
+    private Point getRandomBoundaryPoint() {
         double random = Math.random();
         int x, y;
-        
+
         if (random <= .25) { // scenario #1 left column of grid
             x = 0;
-            y = (int) (Math.random() * grid.getRows()); 
+            y = (int) (Math.random() * grid.getRows());
         } else if (random <= .5) { // scenario #2 rightmost column of grid
             x = grid.getColumns() - 1;
-            y = (int) (Math.random() * grid.getRows()); 
+            y = (int) (Math.random() * grid.getRows());
         } else if (random <= .75) { // scenario #3 top row of grid
             x = (int) (Math.random() * grid.getColumns());
-            y = 0; 
+            y = 0;
         } else { // scenario #4 bottom row of grid
             x = (int) (Math.random() * grid.getColumns());
             y = grid.getRows() - 1;
         }
-        
+
         return new Point(x, y);
     }
 
@@ -168,33 +178,33 @@ class Forest extends Environment implements MoveValidatorIntf, CellDataProviderI
         System.out.println("mouse clicked at " + e.getPoint());
         System.out.println("mouse clicked in cell" + grid.getCellLocationFromSystemCoordinate(e.getPoint()));
     }
-    
-    private int getGridHeigth(){
+
+    private int getGridHeigth() {
         return grid.getCellHeight() * grid.getRows();
     }
-    
-    private int getGridWidth(){
+
+    private int getGridWidth() {
         return grid.getCellWidth() * grid.getColumns();
     }
 
     @Override
     public void paintEnvironment(Graphics graphics) {
-        
+
         if (forest != null) {
-            graphics.drawImage(forest, grid.getPosition().x, grid.getPosition().y, 
+            graphics.drawImage(forest, grid.getPosition().x, grid.getPosition().y,
                     getGridWidth(), getGridHeigth(), this);
         }
-        
+
         if (grid != null) {
             grid.paintComponent(graphics);
         }
-        
+
         if (hydra != null) {
             hydra.draw(graphics);
         }
 
         if (workers != null) {
-            for (GridItem worker : workers){
+            for (GridItem worker : workers) {
                 worker.draw(graphics);
             }
         }
@@ -225,17 +235,17 @@ class Forest extends Environment implements MoveValidatorIntf, CellDataProviderI
     public int getCellWidth() {
         return grid.getCellWidth();
     }
-    
+
     @Override
     public int getCellHeight() {
         return grid.getCellHeight();
     }
-    
+
     @Override
     public int getSystemCoordX(int x, int y) {
         return grid.getCellSystemCoordinate(x, y).x;
     }
-    
+
     @Override
     public int getSystemCoordY(int x, int y) {
         return grid.getCellSystemCoordinate(x, y).y;
