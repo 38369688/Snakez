@@ -8,11 +8,11 @@
 
 
     Homework for Alex
-      - get image for workers
-      - get image for bombs
+      - get image for workers 
+      - get image for bombs V
       - get sounds for events 
-         - drop bomb
-        - bomb explode
+         - drop bomb 
+        - bomb explode 
         - eating
         - game end
         - game start
